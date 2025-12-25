@@ -162,5 +162,5 @@ document.getElementById('reportForm').addEventListener('submit', function(e) {
 
 <?php
 $content = ob_get_clean();
-include '../layout.php';
+include dirname(__DIR__) . '/layout.php';
 ?>

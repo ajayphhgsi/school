@@ -81,7 +81,7 @@ class AdminController extends Controller {
             'last_name' => 'required|min:2|max:50',
             'date_of_birth' => 'required|date',
             'gender' => 'required|in:male,female,other',
-            'mobile' => 'required|numeric|min:10|max:15',
+            'mobile' => 'required|regex:/^[0-9]{10,15}$/',
             'class_id' => 'required|numeric'
         ];
 
@@ -190,7 +190,7 @@ class AdminController extends Controller {
             'last_name' => 'required|min:2|max:50',
             'date_of_birth' => 'required|date',
             'gender' => 'required|in:male,female,other',
-            'mobile' => 'required|numeric|min:10|max:15',
+            'mobile' => 'required|regex:/^[0-9]{10,15}$/',
             'class_id' => 'required|numeric'
         ];
 
@@ -231,6 +231,22 @@ class AdminController extends Controller {
             $this->session->setFlash('error', 'Failed to update student');
             $this->redirect('/admin/students/edit/' . $id);
         }
+    }
+
+    public function viewStudent($id) {
+        $student = $this->db->selectOne("
+            SELECT s.*, c.class_name, c.section
+            FROM students s
+            LEFT JOIN classes c ON s.class_id = c.id
+            WHERE s.id = ?
+        ", [$id]);
+
+        if (!$student) {
+            $this->session->setFlash('error', 'Student not found');
+            $this->redirect('/admin/students');
+        }
+
+        $this->render('admin/students/view', ['student' => $student]);
     }
 
     public function deleteStudent($id) {
@@ -395,7 +411,8 @@ class AdminController extends Controller {
 
     public function attendance() {
         $classes = $this->db->select("SELECT * FROM classes WHERE is_active = 1 ORDER BY class_name");
-        $this->render('admin/attendance/index', ['classes' => $classes]);
+        $csrfToken = $this->csrfToken();
+        $this->render('admin/attendance/index', ['classes' => $classes, 'csrf_token' => $csrfToken]);
     }
 
     public function attendanceData() {
@@ -1622,6 +1639,11 @@ class AdminController extends Controller {
             $this->session->setFlash('error', 'Failed to record fee payment: ' . $e->getMessage());
             $this->redirect('/admin/fees/create');
         }
+    }
+
+    public function expenses() {
+        $expenses = $this->db->select("SELECT * FROM expenses ORDER BY created_at DESC");
+        $this->render('admin/expenses/index', ['expenses' => $expenses]);
     }
 
     public function events() {

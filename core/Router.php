@@ -65,8 +65,13 @@ class Router {
     }
 
     private function callHandler($handler, $params) {
+        // Filter out named parameters, keep only positional ones
+        $positionalParams = array_filter($params, function($key) {
+            return is_int($key);
+        }, ARRAY_FILTER_USE_KEY);
+
         if (is_callable($handler)) {
-            call_user_func_array($handler, $params);
+            call_user_func_array($handler, $positionalParams);
         } elseif (is_string($handler)) {
             list($controller, $method) = explode('@', $handler);
             $controllerFile = CONTROLLERS_PATH . $controller . '.php';
@@ -75,7 +80,7 @@ class Router {
                 require_once $controllerFile;
                 $controllerInstance = new $controller();
                 if (method_exists($controllerInstance, $method)) {
-                    call_user_func_array([$controllerInstance, $method], $params);
+                    call_user_func_array([$controllerInstance, $method], $positionalParams);
                 } else {
                     throw new Exception("Method {$method} not found in {$controller}");
                 }

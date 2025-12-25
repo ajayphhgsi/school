@@ -4,6 +4,10 @@
  * Version 1.0.0
  */
 
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Start session
 session_start();
 
@@ -60,6 +64,7 @@ $router->get('/admin/dashboard', 'AdminController@dashboard');
 $router->get('/admin/students', 'AdminController@students');
 $router->get('/admin/students/create', 'AdminController@createStudent');
 $router->post('/admin/students', 'AdminController@storeStudent');
+$router->get('/admin/students/view/{id}', 'AdminController@viewStudent');
 $router->get('/admin/students/edit/{id}', 'AdminController@editStudent');
 $router->post('/admin/students/update/{id}', 'AdminController@updateStudent');
 $router->get('/admin/students/delete/{id}', 'AdminController@deleteStudent');

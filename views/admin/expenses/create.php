@@ -189,5 +189,5 @@ document.addEventListener('DOMContentLoaded', function() {
 <?php
 unset($_SESSION['flash']['old'], $_SESSION['flash']['errors']);
 $content = ob_get_clean();
-include '../layout.php';
+include dirname(__DIR__) . '/layout.php';
 ?>

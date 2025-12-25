@@ -189,5 +189,5 @@ document.querySelectorAll('form').forEach(form => {
 
 <?php
 $content = ob_get_clean();
-include '../layout.php';
+include dirname(__DIR__) . '/layout.php';
 ?>
