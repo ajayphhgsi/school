@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $title ?? 'Admin Panel'; ?> - School Management System</title>
+    <title><?php echo $title ?? 'Student Portal'; ?> - School Management System</title>
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .sidebar {
             width: 250px;
             min-height: 100vh;
-            background: #343a40;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             position: fixed;
             left: 0;
@@ -31,7 +31,7 @@
         }
         .sidebar .nav-link.active {
             color: white;
-            background: #0d6efd;
+            background: rgba(255,255,255,.2);
         }
         .main-content {
             margin-left: 250px;
@@ -85,75 +85,45 @@
     <nav class="sidebar d-flex flex-column p-3" id="sidebar">
         <div class="mb-4">
             <h5 class="text-center">
-                <i class="fas fa-school"></i><br>
-                School Admin
+                <i class="fas fa-graduation-cap"></i><br>
+                Student Portal
             </h5>
         </div>
 
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link <?php echo $active_page === 'dashboard' ? 'active' : ''; ?>" href="/admin/dashboard">
+                <a class="nav-link <?php echo $active_page === 'dashboard' ? 'active' : ''; ?>" href="/student/dashboard">
                     <i class="fas fa-tachometer-alt"></i> Dashboard
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link <?php echo $active_page === 'homepage' ? 'active' : ''; ?>" href="/admin/homepage">
-                    <i class="fas fa-home"></i> Homepage
+                <a class="nav-link <?php echo $active_page === 'profile' ? 'active' : ''; ?>" href="/student/profile">
+                    <i class="fas fa-user"></i> My Profile
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link <?php echo $active_page === 'students' ? 'active' : ''; ?>" href="/admin/students">
-                    <i class="fas fa-users"></i> Students
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link <?php echo $active_page === 'classes' ? 'active' : ''; ?>" href="/admin/classes">
-                    <i class="fas fa-chalkboard"></i> Classes & Subjects
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link <?php echo $active_page === 'attendance' ? 'active' : ''; ?>" href="/admin/attendance">
+                <a class="nav-link <?php echo $active_page === 'attendance' ? 'active' : ''; ?>" href="/student/attendance">
                     <i class="fas fa-calendar-check"></i> Attendance
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link <?php echo $active_page === 'exams' ? 'active' : ''; ?>" href="/admin/exams">
-                    <i class="fas fa-file-alt"></i> Exams & Results
+                <a class="nav-link <?php echo $active_page === 'results' ? 'active' : ''; ?>" href="/student/results">
+                    <i class="fas fa-chart-line"></i> Exam Results
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link <?php echo $active_page === 'fees' ? 'active' : ''; ?>" href="/admin/fees">
+                <a class="nav-link <?php echo $active_page === 'fees' ? 'active' : ''; ?>" href="/student/fees">
                     <i class="fas fa-money-bill-wave"></i> Fees
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link <?php echo $active_page === 'expenses' ? 'active' : ''; ?>" href="/admin/expenses">
-                    <i class="fas fa-money-bill-wave"></i> Expenses
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link <?php echo $active_page === 'events' ? 'active' : ''; ?>" href="/admin/events">
+                <a class="nav-link <?php echo $active_page === 'events' ? 'active' : ''; ?>" href="/student/events">
                     <i class="fas fa-calendar"></i> Events
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link <?php echo $active_page === 'gallery' ? 'active' : ''; ?>" href="/admin/gallery">
-                    <i class="fas fa-images"></i> Gallery
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link <?php echo $active_page === 'certificates' ? 'active' : ''; ?>" href="/admin/certificates">
-                    <i class="fas fa-certificate"></i> Certificates
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link <?php echo $active_page === 'reports' ? 'active' : ''; ?>" href="/admin/reports">
-                    <i class="fas fa-chart-bar"></i> Reports
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link <?php echo $active_page === 'settings' ? 'active' : ''; ?>" href="/admin/settings">
-                    <i class="fas fa-cog"></i> Settings
+                <a class="nav-link <?php echo $active_page === 'resources' ? 'active' : ''; ?>" href="/student/resources">
+                    <i class="fas fa-book"></i> Resources
                 </a>
             </li>
         </ul>
@@ -161,11 +131,10 @@
         <div class="mt-auto">
             <div class="dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                    <i class="fas fa-user"></i> <?php echo $_SESSION['user']['first_name'] ?? 'Admin'; ?>
+                    <i class="fas fa-user"></i> <?php echo $_SESSION['user']['first_name'] ?? 'Student'; ?>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/admin/profile"><i class="fas fa-user-edit"></i> Profile</a></li>
-                    <li><a class="dropdown-item" href="/admin/change-password"><i class="fas fa-key"></i> Change Password</a></li>
+                    <li><a class="dropdown-item" href="/student/change-password"><i class="fas fa-key"></i> Change Password</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                 </ul>
@@ -186,7 +155,7 @@
                 </div>
                 <div>
                     <span class="text-muted">
-                        Welcome, <?php echo $_SESSION['user']['first_name'] ?? 'Admin'; ?> |
+                        Welcome, <?php echo $_SESSION['user']['first_name'] ?? 'Student'; ?> |
                         <?php echo date('M d, Y'); ?>
                     </span>
                 </div>
@@ -196,26 +165,20 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item">
-                        <a href="/admin/dashboard"><i class="fas fa-home"></i> Dashboard</a>
+                        <a href="/student/dashboard"><i class="fas fa-home"></i> Dashboard</a>
                     </li>
                     <?php if ($active_page !== 'dashboard'): ?>
                         <li class="breadcrumb-item active" aria-current="page">
                             <?php
                             $page_names = [
-                                'homepage' => 'Homepage Management',
-                                'students' => 'Students',
-                                'classes' => 'Classes & Subjects',
+                                'profile' => 'My Profile',
                                 'attendance' => 'Attendance',
-                                'exams' => 'Exams & Results',
+                                'results' => 'Exam Results',
                                 'fees' => 'Fees',
-                                'expenses' => 'Expenses',
                                 'events' => 'Events',
-                                'gallery' => 'Gallery',
-                                'certificates' => 'Certificates',
-                                'reports' => 'Reports',
-                                'settings' => 'Settings'
+                                'change-password' => 'Change Password'
                             ];
-                            echo $page_names[$active_page] ?? ucfirst(str_replace('_', ' ', $active_page));
+                            echo $page_names[$active_page] ?? ucfirst(str_replace('-', ' ', $active_page));
                             ?>
                         </li>
                     <?php endif; ?>
@@ -263,4 +226,8 @@
         });
     </script>
 </body>
-</html>
+</html></content>
+</xai:function_call"> 
+
+<xai:function_call name="apply_diff">
+<parameter name="path">views/student/dashboard.php

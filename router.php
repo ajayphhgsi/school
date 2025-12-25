@@ -12,7 +12,7 @@ if (php_sapi_name() === 'cli-server') {
     $path = strtok($path, '?');
 
     // Handle static files
-    $staticExtensions = ['css', 'js', 'png', 'jpg', 'jpeg', 'gif', 'ico', 'svg', 'woff', 'woff2', 'ttf', 'eot'];
+    $staticExtensions = ['css', 'js', 'png', 'jpg', 'jpeg', 'gif', 'ico', 'svg', 'woff', 'woff2', 'ttf', 'eot', 'html'];
     $pathInfo = pathinfo($path);
 
     if (isset($pathInfo['extension']) && in_array(strtolower($pathInfo['extension']), $staticExtensions)) {
@@ -32,7 +32,8 @@ if (php_sapi_name() === 'cli-server') {
                 'woff' => 'font/woff',
                 'woff2' => 'font/woff2',
                 'ttf' => 'font/ttf',
-                'eot' => 'application/vnd.ms-fontobject'
+                'eot' => 'application/vnd.ms-fontobject',
+                'html' => 'text/html'
             ];
 
             if (isset($mimeTypes[$pathInfo['extension']])) {

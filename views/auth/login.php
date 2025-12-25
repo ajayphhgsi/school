@@ -89,8 +89,8 @@
                             </div>
 
                             <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                                <label class="form-check-label" for="remember">Remember me</label>
+                                <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me" <?php echo (isset($_SESSION['flash']['old']['remember_me']) && $_SESSION['flash']['old']['remember_me']) ? 'checked' : ''; ?>>
+                                <label class="form-check-label" for="remember_me">Remember me</label>
                             </div>
 
                             <div class="d-grid">

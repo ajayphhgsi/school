@@ -15,6 +15,7 @@ CREATE TABLE users (
     last_name VARCHAR(50),
     phone VARCHAR(20),
     avatar VARCHAR(255),
+    remember_token VARCHAR(255),
     is_active BOOLEAN DEFAULT TRUE,
     last_login DATETIME,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -145,6 +146,21 @@ CREATE TABLE exams (
     FOREIGN KEY (class_id) REFERENCES classes(id)
 );
 
+-- Exam subjects table (for scheduling subjects within exams)
+CREATE TABLE exam_subjects (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    exam_id INT,
+    subject_id INT,
+    exam_date DATE,
+    exam_day VARCHAR(20),
+    start_time TIME,
+    end_time TIME,
+    max_marks DECIMAL(5,2),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (exam_id) REFERENCES exams(id) ON DELETE CASCADE,
+    FOREIGN KEY (subject_id) REFERENCES subjects(id)
+);
+
 -- Exam results table
 CREATE TABLE exam_results (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -211,10 +227,27 @@ CREATE TABLE events (
     description TEXT,
     event_date DATE,
     event_time TIME,
-    location VARCHAR(255),
+    venue VARCHAR(255),
+    organizer VARCHAR(100),
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- News table
+CREATE TABLE news (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    content TEXT,
+    summary TEXT,
+    image_path VARCHAR(255),
+    published_date DATE,
+    author_id INT,
+    is_featured BOOLEAN DEFAULT FALSE,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (author_id) REFERENCES users(id)
 );
 
 -- Gallery table
@@ -263,6 +296,42 @@ CREATE TABLE settings (
     setting_type VARCHAR(20) DEFAULT 'string',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Certificates table
+CREATE TABLE certificates (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    certificate_type ENUM('transfer', 'character', 'bonafide') NOT NULL,
+    certificate_number VARCHAR(50) UNIQUE,
+    student_id INT,
+    issue_date DATE,
+    transfer_reason VARCHAR(255),
+    conduct VARCHAR(50),
+    remarks TEXT,
+    generated_by INT,
+    pdf_path VARCHAR(255),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
+    FOREIGN KEY (generated_by) REFERENCES users(id)
+);
+
+-- Certificates table
+CREATE TABLE certificates (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    certificate_type ENUM('transfer', 'character', 'bonafide') NOT NULL,
+    certificate_number VARCHAR(50) UNIQUE,
+    student_id INT,
+    issue_date DATE,
+    transfer_reason VARCHAR(255),
+    conduct VARCHAR(50),
+    remarks TEXT,
+    generated_by INT,
+    pdf_path VARCHAR(255),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
+    FOREIGN KEY (generated_by) REFERENCES users(id)
 );
 
 -- Audit logs table

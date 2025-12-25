@@ -23,6 +23,7 @@ class AuthController extends Controller {
         $data = [
             'username' => $_POST['username'] ?? '',
             'password' => $_POST['password'] ?? '',
+            'remember_me' => isset($_POST['remember_me']),
             'csrf_token' => $_POST['csrf_token'] ?? ''
         ];
 
@@ -63,6 +64,16 @@ class AuthController extends Controller {
         if ($user && $this->security->verifyPassword($data['password'], $user['password'])) {
             // Update last login
             $this->db->update('users', ['last_login' => date('Y-m-d H:i:s')], 'id = ?', [$user['id']]);
+
+            // Handle Remember Me
+            if ($data['remember_me']) {
+                // Create a remember token (simplified - in production use secure token)
+                $rememberToken = bin2hex(random_bytes(32));
+                $this->db->update('users', ['remember_token' => $rememberToken], 'id = ?', [$user['id']]);
+
+                // Set cookie for 30 days
+                setcookie('remember_token', $rememberToken, time() + (30 * 24 * 60 * 60), '/', '', true, true);
+            }
 
             // Set session
             $this->session->setUser($user);
