@@ -1,0 +1,35 @@
+{
+    "name": "school-management-system",
+    "description": "A comprehensive School Management System built with PHP",
+    "version": "1.0.0",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "School Management Team",
+            "email": "admin@school.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "ext-pdo": "*",
+        "ext-mbstring": "*",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-session": "*",
+        "ext-openssl": "*",
+        "ext-gd": "*",
+        "ext-zip": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Core\\": "core/",
+            "Controllers\\": "controllers/",
+            "Models\\": "models/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}
