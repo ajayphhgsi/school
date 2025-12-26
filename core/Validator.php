@@ -6,9 +6,11 @@
 class Validator {
     private $errors = [];
     private $data = [];
+    private $db;
 
-    public function __construct($data = []) {
+    public function __construct($data = [], $db = null) {
         $this->data = $data;
+        $this->db = $db;
     }
 
     public function validate($rules) {
@@ -91,6 +93,33 @@ class Validator {
         return preg_match($param, $value);
     }
 
+    private function validateUnique($value, $param) {
+        if (!$this->db) {
+            return true; // If no db, skip validation
+        }
+
+        $parts = explode(',', $param);
+        if (count($parts) < 2 || count($parts) > 3) {
+            return true; // Invalid param, skip
+        }
+
+        $table = trim($parts[0]);
+        $column = trim($parts[1]);
+        $excludeId = isset($parts[2]) ? trim($parts[2]) : null;
+
+        $query = "SELECT COUNT(*) as count FROM {$table} WHERE {$column} = ?";
+        $params = [$value];
+
+        if ($excludeId) {
+            $query .= " AND id != ?";
+            $params[] = $excludeId;
+        }
+
+        $count = $this->db->selectOne($query, $params)['count'];
+
+        return $count == 0;
+    }
+
     private function addError($field, $rule, $param = null) {
         $message = $this->getErrorMessage($field, $rule, $param);
         $this->errors[$field][] = $message;
@@ -109,6 +138,7 @@ class Validator {
             'url' => 'The :field field is not a valid URL.',
             'in' => 'The selected :field is invalid.',
             'regex' => 'The :field field format is invalid.',
+            'unique' => 'The :field field must be unique.',
         ];
 
         $message = $messages[$rule] ?? 'The :field field is invalid.';

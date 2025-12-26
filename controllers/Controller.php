@@ -54,7 +54,7 @@ class Controller {
     }
 
     protected function validate($data, $rules) {
-        $this->validator = new Validator($data);
+        $this->validator = new Validator($data, $this->db);
         return $this->validator->validate($rules);
     }
 

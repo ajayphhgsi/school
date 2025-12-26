@@ -27,13 +27,50 @@ class AdminController extends Controller {
 
     public function students() {
         $students = $this->db->select("SELECT s.*, c.class_name, c.section FROM students s LEFT JOIN classes c ON s.class_id = c.id ORDER BY s.created_at DESC");
-        $this->render('admin/students/index', ['students' => $students]);
+        $schoolName = $this->db->selectOne("SELECT setting_value FROM settings WHERE setting_key = 'school_name'")['setting_value'] ?? 'School Management System';
+        $this->render('admin/students/index', ['students' => $students, 'school_name' => $schoolName]);
+    }
+
+    public function printStudents() {
+        $students = $this->db->select("SELECT s.*, c.class_name, c.section FROM students s LEFT JOIN classes c ON s.class_id = c.id ORDER BY s.first_name, s.last_name");
+        $schoolName = $this->db->selectOne("SELECT setting_value FROM settings WHERE setting_key = 'school_name'")['setting_value'] ?? 'School Management System';
+        $schoolAddress = $this->db->selectOne("SELECT setting_value FROM settings WHERE setting_key = 'school_address'")['setting_value'] ?? '';
+        $this->render('admin/students/print', [
+            'students' => $students,
+            'school_name' => $schoolName,
+            'school_address' => $schoolAddress
+        ]);
     }
 
     public function createStudent() {
         $classes = $this->db->select("SELECT * FROM classes WHERE is_active = 1 ORDER BY class_name");
         $csrfToken = $this->csrfToken();
         $this->render('admin/students/create', ['classes' => $classes, 'csrf_token' => $csrfToken]);
+    }
+
+    public function addStudent($id = null) {
+        $classes = $this->db->select("SELECT * FROM classes WHERE is_active = 1 ORDER BY class_name");
+        $csrfToken = $this->csrfToken();
+        
+        if ($id) {
+            // Edit mode
+            $student = $this->db->selectOne("SELECT * FROM students WHERE id = ?", [$id]);
+            if (!$student) {
+                $this->session->setFlash('error', 'Student not found');
+                $this->redirect('/admin/students');
+            }
+            $this->render('admin/students/add', [
+                'student' => $student,
+                'classes' => $classes,
+                'csrf_token' => $csrfToken
+            ]);
+        } else {
+            // Create mode
+            $this->render('admin/students/add', [
+                'classes' => $classes,
+                'csrf_token' => $csrfToken
+            ]);
+        }
     }
 
     public function storeStudent() {
@@ -76,7 +113,7 @@ class AdminController extends Controller {
 
         $rules = [
             'scholar_number' => 'required|unique:students,scholar_number',
-            'admission_number' => 'required',
+            'admission_number' => 'required|unique:students,admission_number',
             'first_name' => 'required|min:2|max:50',
             'last_name' => 'required|min:2|max:50',
             'date_of_birth' => 'required|date',
@@ -184,8 +221,8 @@ class AdminController extends Controller {
         }
 
         $rules = [
-            'scholar_number' => 'required',
-            'admission_number' => 'required',
+            'scholar_number' => 'required|unique:students,scholar_number,' . $id,
+            'admission_number' => 'required|unique:students,admission_number,' . $id,
             'first_name' => 'required|min:2|max:50',
             'last_name' => 'required|min:2|max:50',
             'date_of_birth' => 'required|date',

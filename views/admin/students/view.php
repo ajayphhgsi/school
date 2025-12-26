@@ -4,12 +4,41 @@ $page_title = 'View Student';
 ob_start();
 ?>
 
+<style>
+@media print {
+    .btn, .alert, .card-header .btn {
+        display: none !important;
+    }
+    .card {
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+    }
+    .card-header {
+        background-color: #f8f9fa !important;
+        border-bottom: 1px solid #000 !important;
+    }
+    body {
+        font-size: 12px;
+    }
+    .row {
+        page-break-inside: avoid;
+    }
+    @page {
+        margin: 1in;
+    }
+}
+</style>
+
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h4 class="mb-1"><i class="fas fa-user text-primary me-2"></i>Student Details</h4>
         <p class="text-muted mb-0">Complete information for <?php echo $student['first_name'] . ' ' . $student['last_name']; ?></p>
     </div>
     <div>
+        <button onclick="window.print()" class="btn btn-outline-secondary me-2">
+            <i class="fas fa-print me-1"></i>Print Details
+        </button>
         <a href="/admin/students/edit/<?php echo $student['id']; ?>" class="btn btn-primary me-2">
             <i class="fas fa-edit me-1"></i>Edit Student
         </a>

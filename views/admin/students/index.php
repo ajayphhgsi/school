@@ -55,6 +55,7 @@ ob_start();
     padding: 1.5rem;
     margin-bottom: 2rem;
 }
+
 </style>
 
 <!-- Page Header -->
@@ -63,9 +64,14 @@ ob_start();
         <h4 class="mb-1"><i class="fas fa-users text-primary me-2"></i>Students Management</h4>
         <p class="text-muted mb-0">Manage student records and information</p>
     </div>
-    <a href="/admin/students/create" class="btn btn-primary btn-lg">
-        <i class="fas fa-plus me-2"></i>Add New Student
-    </a>
+    <div>
+        <a href="/admin/students/print" target="_blank" class="btn btn-outline-secondary me-2">
+            <i class="fas fa-print me-1"></i>Print List
+        </a>
+        <a href="/admin/students/create" class="btn btn-primary btn-lg">
+            <i class="fas fa-plus me-2"></i>Add New Student
+        </a>
+    </div>
 </div>
 
 <!-- Flash Messages -->

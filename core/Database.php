@@ -57,13 +57,14 @@ class Database {
     }
 
     public function update($table, $data, $where, $whereParams = []) {
+        $columns = array_keys($data);
         $set = [];
-        foreach ($data as $key => $value) {
-            $set[] = "{$key} = :{$key}";
+        foreach ($columns as $column) {
+            $set[] = "{$column} = ?";
         }
         $setStr = implode(', ', $set);
         $sql = "UPDATE {$table} SET {$setStr} WHERE {$where}";
-        $params = array_merge($data, $whereParams);
+        $params = array_merge(array_values($data), $whereParams);
         $stmt = $this->query($sql, $params);
         return $stmt->rowCount();
     }

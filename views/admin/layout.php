@@ -7,11 +7,35 @@
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            /* Modern Theme */
+            --sidebar-bg: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+            --sidebar-hover: rgba(255,255,255,0.1);
+            --sidebar-active: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            --navbar-bg: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            --card-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            --border-radius: 0.5rem;
+            --primary: #667eea;
+            --secondary: #764ba2;
+        }
+
+        /* Classic Theme */
+        [data-theme="classic"] {
+            --sidebar-bg: #2c3e50;
+            --sidebar-hover: rgba(255,255,255,0.1);
+            --sidebar-active: #3498db;
+            --navbar-bg: #ffffff;
+            --card-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            --border-radius: 0.25rem;
+            --primary: #2c3e50;
+            --secondary: #34495e;
+        }
+
         /* Modern Sidebar Styles */
         .sidebar {
             width: 280px;
             min-height: 100vh;
-            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+            background: var(--sidebar-bg);
             color: white;
             position: fixed;
             left: 0;
@@ -83,7 +107,7 @@
 
         .sidebar .nav-link:hover {
             color: white;
-            background: rgba(255,255,255,0.1);
+            background: var(--sidebar-hover);
             transform: translateX(5px);
         }
 
@@ -93,7 +117,7 @@
 
         .sidebar .nav-link.active {
             color: white;
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            background: var(--sidebar-active);
             box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
         }
 
@@ -212,7 +236,7 @@
 
         /* Modern Navbar Styles */
         .navbar {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            background: var(--navbar-bg);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
         }
@@ -534,6 +558,11 @@
 
                 <!-- Right Side Items -->
                 <div class="d-flex align-items-center">
+                    <!-- Theme Toggle -->
+                    <button class="btn btn-outline-secondary me-2" id="themeToggle" title="Toggle Theme">
+                        <i class="fas fa-palette"></i>
+                    </button>
+
                     <!-- Quick Search (Mobile) -->
                     <div class="d-lg-none me-2">
                         <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#mobileSearch" aria-expanded="false">
@@ -769,6 +798,36 @@
         // Setup search for both desktop and mobile
         setupSearch('quickSearch');
         setupSearch('mobileQuickSearch');
+
+        // Theme switching functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'modern';
+        html.setAttribute('data-theme', savedTheme);
+
+        // Update toggle icon based on theme
+        function updateToggleIcon() {
+            const icon = themeToggle.querySelector('i');
+            if (html.getAttribute('data-theme') === 'classic') {
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+        }
+
+        updateToggleIcon();
+
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'classic' ? 'modern' : 'classic';
+
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateToggleIcon();
+        });
     </script>
 </body>
 </html>

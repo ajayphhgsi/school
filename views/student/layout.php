@@ -7,10 +7,30 @@
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            /* Modern Theme */
+            --sidebar-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --sidebar-hover: rgba(255,255,255,0.1);
+            --sidebar-active: rgba(255,255,255,0.2);
+            --header-bg: white;
+            --card-shadow: 0 2px 4px rgba(0,0,0,.1);
+            --border: 1px solid #e9ecef;
+        }
+
+        /* Classic Theme */
+        [data-theme="classic"] {
+            --sidebar-bg: #2c3e50;
+            --sidebar-hover: rgba(255,255,255,0.1);
+            --sidebar-active: rgba(255,255,255,0.2);
+            --header-bg: #f8f9fa;
+            --card-shadow: 0 1px 3px rgba(0,0,0,.1);
+            --border: 1px solid #dee2e6;
+        }
+
         .sidebar {
             width: 250px;
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--sidebar-bg);
             color: white;
             position: fixed;
             left: 0;
@@ -27,21 +47,21 @@
         }
         .sidebar .nav-link:hover {
             color: white;
-            background: rgba(255,255,255,.1);
+            background: var(--sidebar-hover);
         }
         .sidebar .nav-link.active {
             color: white;
-            background: rgba(255,255,255,.2);
+            background: var(--sidebar-active);
         }
         .main-content {
             margin-left: 250px;
             min-height: 100vh;
         }
         .header {
-            background: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+            background: var(--header-bg);
+            box-shadow: var(--card-shadow);
             padding: 1rem;
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: var(--border);
         }
         .sidebar.collapsed {
             transform: translateX(-100%);
@@ -153,7 +173,10 @@
                     </button>
                     <h4 class="mb-0 d-inline ms-2"><?php echo $page_title ?? 'Dashboard'; ?></h4>
                 </div>
-                <div>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-outline-secondary me-2" id="themeToggle" title="Toggle Theme">
+                        <i class="fas fa-palette"></i>
+                    </button>
                     <span class="text-muted">
                         Welcome, <?php echo $_SESSION['user']['first_name'] ?? 'Student'; ?> |
                         <?php echo date('M d, Y'); ?>

@@ -6,9 +6,9 @@ ob_start();
 
 <style>
 .stats-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
     border: none;
-    border-radius: 15px;
+    border-radius: var(--border-radius);
     color: white;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
@@ -17,7 +17,7 @@ ob_start();
 
 .stats-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    box-shadow: var(--card-shadow);
 }
 
 .stats-card::before {
@@ -43,9 +43,9 @@ ob_start();
 }
 
 .quick-action-card {
-    background: white;
+    background: var(--card-bg);
     border: 1px solid #e9ecef;
-    border-radius: 12px;
+    border-radius: var(--border-radius);
     transition: all 0.3s ease;
     cursor: pointer;
     text-decoration: none;
@@ -54,7 +54,7 @@ ob_start();
 
 .quick-action-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: var(--card-shadow);
     text-decoration: none;
     color: inherit;
 }
@@ -72,16 +72,29 @@ ob_start();
 
 .recent-activity {
     background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    border-radius: 12px;
+    border-radius: var(--border-radius);
     color: white;
 }
 
 .welcome-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 15px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    border-radius: var(--border-radius);
     color: white;
     padding: 2rem;
     margin-bottom: 2rem;
+}
+
+/* Classic theme overrides */
+[data-theme="classic"] .stats-card {
+    background: var(--primary);
+}
+
+[data-theme="classic"] .welcome-section {
+    background: var(--primary);
+}
+
+[data-theme="classic"] .recent-activity {
+    background: var(--secondary);
 }
 </style>
 

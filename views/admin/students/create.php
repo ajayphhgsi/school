@@ -36,6 +36,9 @@ ob_start();
                     <label for="admission_number" class="form-label">Admission Number *</label>
                     <input type="text" class="form-control" id="admission_number" name="admission_number"
                            value="<?php echo $_SESSION['flash']['old']['admission_number'] ?? ''; ?>" required>
+                    <?php if (isset($_SESSION['flash']['errors']['admission_number'])): ?>
+                        <div class="text-danger small"><?php echo $_SESSION['flash']['errors']['admission_number'][0]; ?></div>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -245,5 +248,5 @@ ob_start();
 <?php
 unset($_SESSION['flash']['old'], $_SESSION['flash']['errors']);
 $content = ob_get_clean();
-include '../layout.php';
+include dirname(__DIR__) . '/layout.php';
 ?>

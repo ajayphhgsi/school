@@ -62,7 +62,10 @@ $router->post('/contact', 'PublicController@contact');
 // Admin routes
 $router->get('/admin/dashboard', 'AdminController@dashboard');
 $router->get('/admin/students', 'AdminController@students');
+$router->get('/admin/students/print', 'AdminController@printStudents');
 $router->get('/admin/students/create', 'AdminController@createStudent');
+$router->get('/admin/students/add', 'AdminController@addStudent');
+$router->get('/admin/students/add/{id}', 'AdminController@addStudent');
 $router->post('/admin/students', 'AdminController@storeStudent');
 $router->get('/admin/students/view/{id}', 'AdminController@viewStudent');
 $router->get('/admin/students/edit/{id}', 'AdminController@editStudent');
